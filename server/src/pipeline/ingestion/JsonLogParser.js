@@ -1,7 +1,10 @@
 /**
  * Project Phoenix — JSON Application Log Parser
  * 
- * Parses structured JSON logs (one JSON object per line / newline-delimited JSON).
+ * Parses structured JSON logs in two formats:
+ *   1. Newline-delimited JSON (NDJSON) — one JSON object per line
+ *   2. Multi-line pretty-printed JSON — objects separated by blank lines or concatenated
+ * 
  * These are typical of application services using structured logging frameworks
  * (Winston, Bunyan, Pino, etc.).
  * 
@@ -49,6 +52,95 @@ function normalizeLogLevel(level) {
   return 'info';
 }
 
+/**
+ * Extract individual JSON objects from content that may be:
+ *   - NDJSON (one object per line)
+ *   - Pretty-printed (multi-line objects separated by newlines)
+ *   - A JSON array of objects
+ * 
+ * Returns an array of { jsonString, startLine } tuples.
+ */
+function extractJsonObjects(content) {
+  const results = [];
+
+  // Strategy 1: Try as a JSON array first
+  const trimmed = content.trim();
+  if (trimmed.startsWith('[')) {
+    try {
+      const arr = JSON.parse(trimmed);
+      if (Array.isArray(arr)) {
+        return arr.map((obj, i) => ({ obj, startLine: i + 1 }));
+      }
+    } catch {
+      // Not a valid JSON array, fall through
+    }
+  }
+
+  // Strategy 2: Try NDJSON (one object per line)
+  const lines = content.split('\n');
+  let ndjsonCount = 0;
+  for (const line of lines) {
+    const t = line.trim();
+    if (!t) continue;
+    try {
+      const p = JSON.parse(t);
+      if (typeof p === 'object' && p !== null) ndjsonCount++;
+    } catch { /* skip */ }
+  }
+
+  // If >50% of non-empty lines are valid single-line JSON, treat as NDJSON
+  const nonEmptyLines = lines.filter(l => l.trim()).length;
+  if (nonEmptyLines > 0 && (ndjsonCount / nonEmptyLines) > 0.5) {
+    for (let i = 0; i < lines.length; i++) {
+      const t = lines[i].trim();
+      if (!t) continue;
+      try {
+        const obj = JSON.parse(t);
+        if (typeof obj === 'object' && obj !== null) {
+          results.push({ obj, startLine: i + 1 });
+        }
+      } catch { /* skip */ }
+    }
+    return results;
+  }
+
+  // Strategy 3: Multi-line JSON — brace-counting parser
+  let depth = 0;
+  let currentChunk = '';
+  let chunkStartLine = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const t = line.trim();
+
+    if (depth === 0 && t.startsWith('{')) {
+      currentChunk = '';
+      chunkStartLine = i + 1;
+    }
+
+    if (depth > 0 || t.startsWith('{')) {
+      currentChunk += line + '\n';
+
+      for (const ch of t) {
+        if (ch === '{') depth++;
+        else if (ch === '}') depth--;
+      }
+
+      if (depth === 0 && currentChunk.trim()) {
+        try {
+          const obj = JSON.parse(currentChunk.trim());
+          if (typeof obj === 'object' && obj !== null) {
+            results.push({ obj, startLine: chunkStartLine });
+          }
+        } catch { /* malformed, skip */ }
+        currentChunk = '';
+      }
+    }
+  }
+
+  return results;
+}
+
 export class JsonLogParser {
   constructor() {
     this.source = 'app';
@@ -56,11 +148,22 @@ export class JsonLogParser {
   }
 
   /**
-   * Check if content looks like newline-delimited JSON.
+   * Check if content looks like JSON logs (NDJSON or multi-line).
    * @param {string[]} sampleLines
    * @returns {number} Confidence score 0-100.
    */
   static detect(sampleLines) {
+    // Quick check: does the first non-empty line start with { or [ ?
+    const firstNonEmpty = sampleLines.find(l => l.trim());
+    if (!firstNonEmpty) return 0;
+    const t = firstNonEmpty.trim();
+    if (t.startsWith('{') || t.startsWith('[')) {
+      // Looks like JSON — try to extract objects from the full joined content
+      const joined = sampleLines.join('\n');
+      const objects = extractJsonObjects(joined);
+      return objects.length > 0 ? 80 : 10;
+    }
+    // Fallback: try each line individually (NDJSON)
     let matches = 0;
     for (const line of sampleLines) {
       const trimmed = line.trim();
@@ -68,9 +171,7 @@ export class JsonLogParser {
       try {
         const parsed = JSON.parse(trimmed);
         if (typeof parsed === 'object' && parsed !== null) matches++;
-      } catch {
-        // Not JSON
-      }
+      } catch { /* Not JSON */ }
     }
     return sampleLines.length > 0 ? Math.round((matches / sampleLines.length) * 100) : 0;
   }
@@ -142,17 +243,70 @@ export class JsonLogParser {
   }
 
   /**
-   * Parse entire file content.
+   * Parse a pre-extracted JSON object into a NormalizedEvent.
+   * @param {Object} obj - Parsed JSON object.
+   * @param {number} lineNumber
+   * @param {string} sourceFile
+   * @returns {NormalizedEvent|null}
+   */
+  parseObject(obj, lineNumber, sourceFile = '') {
+    if (typeof obj !== 'object' || obj === null) return null;
+
+    const timestamp = findField(obj, TIMESTAMP_FIELDS);
+    const ip = findField(obj, IP_FIELDS) || '';
+    const logLevel = normalizeLogLevel(findField(obj, LEVEL_FIELDS));
+    const rawEndpoint = findField(obj, ENDPOINT_FIELDS) || '';
+    const method = findField(obj, METHOD_FIELDS) || '';
+    const statusCode = findField(obj, STATUS_FIELDS);
+    const user = findField(obj, USER_FIELDS) || '';
+    const message = findField(obj, MESSAGE_FIELDS) || '';
+
+    const endpoint = this.deobfuscator.deobfuscateField(rawEndpoint);
+
+    const knownFields = new Set([
+      ...TIMESTAMP_FIELDS, ...IP_FIELDS, ...LEVEL_FIELDS,
+      ...ENDPOINT_FIELDS, ...METHOD_FIELDS, ...STATUS_FIELDS,
+      ...USER_FIELDS, ...MESSAGE_FIELDS
+    ]);
+    const metadata = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (!knownFields.has(key)) {
+        metadata[key] = value;
+      }
+    }
+    metadata.message = message;
+    if (rawEndpoint !== endpoint) {
+      metadata.rawEndpoint = rawEndpoint;
+    }
+
+    return new NormalizedEvent({
+      timestamp: timestamp ? new Date(timestamp) : new Date(),
+      source: this.source,
+      sourceFile,
+      ip,
+      method: method ? method.toUpperCase() : '',
+      endpoint,
+      statusCode: statusCode ? parseInt(statusCode, 10) : null,
+      logLevel,
+      user,
+      rawLine: JSON.stringify(obj),
+      lineNumber,
+      metadata
+    });
+  }
+
+  /**
+   * Parse entire file content (handles both NDJSON and multi-line JSON).
    * @param {string} content
    * @param {string} sourceFile
    * @returns {NormalizedEvent[]}
    */
   parse(content, sourceFile = '') {
-    const lines = content.split('\n');
+    const jsonObjects = extractJsonObjects(content);
     const events = [];
 
-    for (let i = 0; i < lines.length; i++) {
-      const event = this.parseLine(lines[i], i + 1, sourceFile);
+    for (const { obj, startLine } of jsonObjects) {
+      const event = this.parseObject(obj, startLine, sourceFile);
       if (event) events.push(event);
     }
 

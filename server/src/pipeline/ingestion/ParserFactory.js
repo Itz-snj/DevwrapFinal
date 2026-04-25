@@ -40,16 +40,21 @@ export class ParserFactory {
    * @returns {{ parser: NginxParser|AuthLogParser|JsonLogParser, format: string, confidence: number }}
    */
   detect(content) {
-    const lines = content.split('\n').filter(l => l.trim()).slice(0, SAMPLE_SIZE);
+    const allNonEmpty = content.split('\n').filter(l => l.trim());
+    const smallSample = allNonEmpty.slice(0, SAMPLE_SIZE);
+    // For JSON detection, we need more lines since objects can be multi-line
+    const largeSample = allNonEmpty.slice(0, 50);
     
-    if (lines.length === 0) {
+    if (smallSample.length === 0) {
       throw new Error('Empty log file — no lines to analyze');
     }
 
     let bestMatch = { format: null, confidence: 0, ParserClass: null };
 
     for (const [format, { ParserClass, detect }] of this.registry) {
-      const confidence = detect(lines);
+      // Give JSON parser the larger sample so multi-line objects are visible
+      const sample = format === 'json' ? largeSample : smallSample;
+      const confidence = detect(sample);
       if (confidence > bestMatch.confidence) {
         bestMatch = { format, confidence, ParserClass };
       }

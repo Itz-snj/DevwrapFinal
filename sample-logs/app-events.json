@@ -1,12 +1,131 @@
-{"timestamp":"2026-04-25T08:02:30.000Z","level":"info","service":"auth-service","message":"User login successful","ip":"192.168.1.105","user":"admin","method":"POST","endpoint":"/api/auth/login","statusCode":200}
-{"timestamp":"2026-04-25T08:03:01.000Z","level":"warn","service":"api-gateway","message":"Access denied to restricted resource","ip":"192.168.1.105","user":"admin","method":"GET","endpoint":"/admin/config","statusCode":403}
-{"timestamp":"2026-04-25T08:03:15.000Z","level":"info","service":"api-gateway","message":"User data retrieved","ip":"192.168.1.105","user":"admin","method":"GET","endpoint":"/api/users","statusCode":200,"responseSize":8192}
-{"timestamp":"2026-04-25T08:03:45.000Z","level":"error","service":"db-service","message":"SQL syntax error detected in query parameter","ip":"192.168.1.105","method":"GET","endpoint":"/api/search","statusCode":200,"query":"' OR 1=1 --","error":"Potential SQL injection detected"}
-{"timestamp":"2026-04-25T08:04:02.000Z","level":"error","service":"db-service","message":"Suspicious SQL query intercepted","ip":"192.168.1.105","method":"GET","endpoint":"/api/search","statusCode":200,"query":"UNION SELECT username,password FROM users","error":"SQL injection attempt"}
-{"timestamp":"2026-04-25T08:04:30.000Z","level":"error","service":"file-service","message":"Path traversal attempt detected","ip":"192.168.1.105","method":"GET","endpoint":"/../../../etc/passwd","statusCode":200,"error":"Unauthorized file access"}
-{"timestamp":"2026-04-25T08:15:00.000Z","level":"info","service":"api-gateway","message":"Health check request","ip":"10.0.0.42","method":"GET","endpoint":"/api/health","statusCode":200}
-{"timestamp":"2026-04-25T08:15:30.000Z","level":"warn","service":"waf","message":"XSS attempt blocked","ip":"10.0.0.42","method":"POST","endpoint":"/api/search","statusCode":400,"payload":"<script>alert('xss')</script>"}
-{"timestamp":"2026-04-25T08:16:25.000Z","level":"info","service":"auth-service","message":"User login successful after multiple attempts","ip":"10.0.0.42","user":"guest","method":"GET","endpoint":"/admin/login","statusCode":200}
-{"timestamp":"2026-04-25T08:20:00.000Z","level":"info","service":"api-gateway","message":"Normal page request","ip":"172.16.0.10","method":"GET","endpoint":"/","statusCode":200}
-{"timestamp":"2026-04-25T08:20:15.000Z","level":"info","service":"api-gateway","message":"Normal page request","ip":"172.16.0.10","method":"GET","endpoint":"/about","statusCode":200}
-{"timestamp":"2026-04-25T08:20:30.000Z","level":"info","service":"api-gateway","message":"Normal page request","ip":"172.16.0.10","method":"GET","endpoint":"/contact","statusCode":200}
+{
+    "timestamp": "2026-04-25T08:02:30.000Z",
+    "level": "info",
+    "service": "auth-service",
+    "message": "User login successful",
+    "ip": "192.168.1.105",
+    "user": "admin",
+    "method": "POST",
+    "endpoint": "/api/auth/login",
+    "statusCode": 200
+}
+{
+    "timestamp": "2026-04-25T08:03:01.000Z",
+    "level": "warn",
+    "service": "api-gateway",
+    "message": "Access denied to restricted resource",
+    "ip": "192.168.1.105",
+    "user": "admin",
+    "method": "GET",
+    "endpoint": "/admin/config",
+    "statusCode": 403
+}
+{
+    "timestamp": "2026-04-25T08:03:15.000Z",
+    "level": "info",
+    "service": "api-gateway",
+    "message": "User data retrieved",
+    "ip": "192.168.1.105",
+    "user": "admin",
+    "method": "GET",
+    "endpoint": "/api/users",
+    "statusCode": 200,
+    "responseSize": 8192
+}
+{
+    "timestamp": "2026-04-25T08:03:45.000Z",
+    "level": "error",
+    "service": "db-service",
+    "message": "SQL syntax error detected in query parameter",
+    "ip": "192.168.1.105",
+    "method": "GET",
+    "endpoint": "/api/search",
+    "statusCode": 200,
+    "query": "' OR 1=1 --",
+    "error": "Potential SQL injection detected"
+}
+{
+    "timestamp": "2026-04-25T08:04:02.000Z",
+    "level": "error",
+    "service": "db-service",
+    "message": "Suspicious SQL query intercepted",
+    "ip": "192.168.1.105",
+    "method": "GET",
+    "endpoint": "/api/search",
+    "statusCode": 200,
+    "query": "UNION SELECT username,password FROM users",
+    "error": "SQL injection attempt"
+}
+{
+    "timestamp": "2026-04-25T08:04:30.000Z",
+    "level": "error",
+    "service": "file-service",
+    "message": "Path traversal attempt detected",
+    "ip": "192.168.1.105",
+    "method": "GET",
+    "endpoint": "/../../../etc/passwd",
+    "statusCode": 200,
+    "error": "Unauthorized file access"
+}
+{
+    "timestamp": "2026-04-25T08:15:00.000Z",
+    "level": "info",
+    "service": "api-gateway",
+    "message": "Health check request",
+    "ip": "10.0.0.42",
+    "method": "GET",
+    "endpoint": "/api/health",
+    "statusCode": 200
+}
+{
+    "timestamp": "2026-04-25T08:15:30.000Z",
+    "level": "warn",
+    "service": "waf",
+    "message": "XSS attempt blocked",
+    "ip": "10.0.0.42",
+    "method": "POST",
+    "endpoint": "/api/search",
+    "statusCode": 400,
+    "payload": "<script>alert('xss')</script>"
+}
+{
+    "timestamp": "2026-04-25T08:16:25.000Z",
+    "level": "info",
+    "service": "auth-service",
+    "message": "User login successful after multiple attempts",
+    "ip": "10.0.0.42",
+    "user": "guest",
+    "method": "GET",
+    "endpoint": "/admin/login",
+    "statusCode": 200
+}
+{
+    "timestamp": "2026-04-25T08:20:00.000Z",
+    "level": "info",
+    "service": "api-gateway",
+    "message": "Normal page request",
+    "ip": "172.16.0.10",
+    "method": "GET",
+    "endpoint": "/",
+    "statusCode": 200
+}
+{
+    "timestamp": "2026-04-25T08:20:15.000Z",
+    "level": "info",
+    "service": "api-gateway",
+    "message": "Normal page request",
+    "ip": "172.16.0.10",
+    "method": "GET",
+    "endpoint": "/about",
+    "statusCode": 200
+}
+{
+    "timestamp": "2026-04-25T08:20:30.000Z",
+    "level": "info",
+    "service": "api-gateway",
+    "message": "Normal page request",
+    "ip": "172.16.0.10",
+    "method": "GET",
+    "endpoint": "/contact",
+    "statusCode": 200
+}

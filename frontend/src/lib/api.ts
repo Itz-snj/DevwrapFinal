@@ -6,7 +6,7 @@ export const WS_BASE = API_BASE.replace(/^http/, "ws");
 async function tryFetch<T>(path: string, init?: RequestInit, fallback?: T): Promise<T> {
   try {
     const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 2500);
+    const t = setTimeout(() => ctrl.abort(), 15000); // 15s to handle Render free-tier cold starts
     const res = await fetch(`${API_BASE}${path}`, { ...init, signal: ctrl.signal });
     clearTimeout(t);
     if (!res.ok) throw new Error(String(res.status));

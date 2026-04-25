@@ -132,6 +132,35 @@ function Live() {
         <BrutButton variant="black" onClick={() => fetch(`${API_BASE}/api/demo/inject`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "brute-force" }) })}>🎯 Brute Force</BrutButton>
         <BrutButton variant="black" onClick={() => fetch(`${API_BASE}/api/demo/inject`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "sqli" }) })}>🎯 SQL Injection</BrutButton>
         <BrutButton variant="black" onClick={() => fetch(`${API_BASE}/api/demo/inject`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "mixed" }) })}>🎯 Mixed Attack</BrutButton>
+        
+        <span className="border-l-2 border-black mx-1" />
+        <div className="flex items-center gap-2">
+          <input 
+            type="text" 
+            id="remoteUrlInput"
+            placeholder="Paste raw log URL (e.g. pastebin raw)" 
+            className="brut-border-2 px-3 py-1.5 text-sm font-mono w-64 focus:outline-none focus:bg-brut-mint/20"
+          />
+          <BrutButton variant="black" onClick={() => {
+            const urlInput = document.getElementById('remoteUrlInput') as HTMLInputElement;
+            if (!urlInput?.value) return;
+            
+            fetch(`${API_BASE}/api/demo/fetch-remote`, { 
+              method: "POST", 
+              headers: { "Content-Type": "application/json" }, 
+              body: JSON.stringify({ url: urlInput.value }) 
+            })
+            .then(res => res.json())
+            .then(data => {
+               if (data.error) alert('Error fetching remote log: ' + data.error);
+               else {
+                 alert(data.message);
+                 urlInput.value = '';
+               }
+            })
+            .catch(err => alert('Failed to contact backend: ' + err.message));
+          }}>🌍 Fetch Remote Log</BrutButton>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-[1fr_360px] gap-4">

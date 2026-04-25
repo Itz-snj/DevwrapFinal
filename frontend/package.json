@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && node build-vercel.js",
+    "build": "vite build",
     "build:dev": "vite build --mode development",
+    "start": "node server.prod.js",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write ."

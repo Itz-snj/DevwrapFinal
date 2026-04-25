@@ -41,10 +41,11 @@ function buildVercel() {
     JSON.stringify(routingConfig, null, 2)
   );
   
-  // 5. Create Edge Function config
+  // 5. Create Node.js Function config
   const funcConfig = {
-    runtime: "edge",
-    entrypoint: "index.js"
+    runtime: "nodejs20.x",
+    handler: "index.js",
+    launcherType: "Nodejs"
   };
   fs.writeFileSync(
     path.join(funcDir, '.vc-config.json'), 
@@ -58,10 +59,12 @@ function buildVercel() {
     fs.cpSync(serverDist, funcServerDir, { recursive: true });
   }
 
-  // 7. Create Edge function entrypoint
+  // 7. Create Node.js function entrypoint
   const edgeEntry = `
 import server from './server/server.js';
-export default server;
+export default async function(request) {
+  return server.fetch(request);
+}
 `;
   fs.writeFileSync(
     path.join(funcDir, 'index.js'), 

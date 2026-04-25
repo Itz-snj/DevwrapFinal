@@ -93,7 +93,9 @@ export class IncidentStore {
           threatScore: data.summary?.threatScore || 0,
           totalAlerts: data.summary?.totalAlerts || 0,
           totalEvents: data.summary?.totalEvents || 0,
-          topAttackerIp: data.summary?.topAttackerIp || null
+          topAttackerIp: data.summary?.topAttackerIp || null,
+          alertsBySeverity: data.summary?.alertsBySeverity || { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 },
+          attackTypes: data.summary?.attackTypes || []
         });
       } catch {
         // Skip corrupted files

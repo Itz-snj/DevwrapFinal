@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: phoenix-api
+    runtime: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CORS_ORIGIN
+        sync: false  # Set manually after frontend is deployed

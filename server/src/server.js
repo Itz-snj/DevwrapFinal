@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger.js';
 import phase1Routes from './api/phase1.js';
@@ -18,7 +18,10 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // ─── Middleware ──────────────────────────────────────────────────────
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*',
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+}));
 app.use(express.json({ limit: '50mb' }));
 
 // ─── Incident Store (injected into routes via app.set) ──────────────
@@ -59,6 +62,41 @@ app.use('/api', phase2Routes);
 
 // ─── Phase 3 Routes: Incidents, Reports, Full Pipeline ──────────────
 app.use('/api', phase3Routes);
+
+// ─── Demo Inject Route (triggers live events for showcase) ──────────
+
+const DEMO_LOGS = {
+  'brute-force': [
+    '192.168.1.200 - - [25/Apr/2026:10:00:01 +0000] "POST /admin/login HTTP/1.1" 401 0 "-" "Mozilla/5.0"',
+    '192.168.1.200 - - [25/Apr/2026:10:00:02 +0000] "POST /admin/login HTTP/1.1" 401 0 "-" "Mozilla/5.0"',
+    '192.168.1.200 - - [25/Apr/2026:10:00:03 +0000] "POST /admin/login HTTP/1.1" 401 0 "-" "Mozilla/5.0"',
+    '192.168.1.200 - - [25/Apr/2026:10:00:04 +0000] "POST /admin/login HTTP/1.1" 401 0 "-" "Mozilla/5.0"',
+    '192.168.1.200 - - [25/Apr/2026:10:00:05 +0000] "POST /admin/login HTTP/1.1" 401 0 "-" "Mozilla/5.0"',
+    '192.168.1.200 - - [25/Apr/2026:10:00:06 +0000] "POST /admin/login HTTP/1.1" 200 1024 "-" "Mozilla/5.0"',
+  ],
+  'sqli': [
+    `10.0.0.99 - - [25/Apr/2026:10:01:01 +0000] "GET /api/search?q=' OR 1=1 -- HTTP/1.1" 200 4096 "-" "sqlmap/1.7"`,
+    `10.0.0.99 - - [25/Apr/2026:10:01:02 +0000] "GET /api/search?q=UNION SELECT username,password FROM users HTTP/1.1" 200 8192 "-" "sqlmap/1.7"`,
+    `10.0.0.99 - - [25/Apr/2026:10:01:03 +0000] "GET /api/products?id=1;DROP TABLE users-- HTTP/1.1" 500 0 "-" "sqlmap/1.7"`,
+  ],
+  'mixed': [
+    '203.0.113.42 - - [25/Apr/2026:10:02:01 +0000] "GET /../../etc/passwd HTTP/1.1" 403 0 "-" "DirBuster/1.0"',
+    '203.0.113.42 - - [25/Apr/2026:10:02:02 +0000] "GET /api/users HTTP/1.1" 200 2048 "-" "DirBuster/1.0"',
+    `203.0.113.42 - - [25/Apr/2026:10:02:03 +0000] "GET /search?q=<script>alert('xss')</script> HTTP/1.1" 200 1024 "-" "Mozilla/5.0"`,
+    '203.0.113.42 - - [25/Apr/2026:10:02:04 +0000] "POST /admin/login HTTP/1.1" 401 0 "-" "Mozilla/5.0"',
+    '203.0.113.42 - - [25/Apr/2026:10:02:05 +0000] "POST /admin/login HTTP/1.1" 401 0 "-" "Mozilla/5.0"',
+    '203.0.113.42 - - [25/Apr/2026:10:02:06 +0000] "POST /admin/login HTTP/1.1" 200 1024 "-" "Mozilla/5.0"',
+  ]
+};
+
+app.post('/api/demo/inject', (req, res) => {
+  const type = req.body?.type || 'mixed';
+  const lines = DEMO_LOGS[type] || DEMO_LOGS['mixed'];
+  const watchDir = path.join(__dirname, '../watched-logs');
+  const filename = `demo_${Date.now()}.log`;
+  writeFileSync(path.join(watchDir, filename), lines.join('\n'), 'utf-8');
+  res.json({ message: `Injected ${lines.length} ${type} events`, filename });
+});
 
 // ─── Start Server & WebSocket ───────────────────────────────────────
 const server = app.listen(PORT, () => {

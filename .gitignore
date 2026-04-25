@@ -1,3 +1,8 @@
 LOVABLE_PROMPT.md
 workflow.md
 node_modules
+server/watched-logs/demo_*
+server/data/incidents/
+frontend/.output/
+frontend/dist/
+.vercel

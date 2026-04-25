@@ -1,0 +1,21 @@
+Apr 25 08:02:10 server sshd[1234]: Failed password for admin from 192.168.1.105 port 22 ssh2
+Apr 25 08:02:13 server sshd[1234]: Failed password for admin from 192.168.1.105 port 22 ssh2
+Apr 25 08:02:16 server sshd[1234]: Failed password for admin from 192.168.1.105 port 22 ssh2
+Apr 25 08:02:19 server sshd[1234]: Failed password for admin from 192.168.1.105 port 22 ssh2
+Apr 25 08:02:22 server sshd[1234]: Failed password for root from 192.168.1.105 port 22 ssh2
+Apr 25 08:02:25 server sshd[1234]: Failed password for root from 192.168.1.105 port 22 ssh2
+Apr 25 08:02:28 server sshd[1234]: Accepted password for admin from 192.168.1.105 port 22 ssh2
+Apr 25 08:02:30 server sshd[1234]: pam_unix(sshd:session): session opened for user admin by (uid=0)
+Apr 25 08:03:00 server sudo: admin : TTY=pts/0 ; PWD=/home/admin ; USER=root ; COMMAND=/bin/cat /etc/shadow
+Apr 25 08:03:05 server sudo: pam_unix(sudo:auth): authentication failure; logname=admin uid=1000 euid=0 tty=/dev/pts/0 ruser=admin rhost= user=admin
+Apr 25 08:15:00 server sshd[2345]: Failed password for root from 10.0.0.42 port 22 ssh2
+Apr 25 08:15:03 server sshd[2345]: Failed password for root from 10.0.0.42 port 22 ssh2
+Apr 25 08:15:06 server sshd[2345]: Failed password for root from 10.0.0.42 port 22 ssh2
+Apr 25 08:15:09 server sshd[2345]: Failed password for root from 10.0.0.42 port 22 ssh2
+Apr 25 08:15:12 server sshd[2345]: Failed password for root from 10.0.0.42 port 22 ssh2
+Apr 25 08:15:15 server sshd[2345]: Failed password for root from 10.0.0.42 port 22 ssh2
+Apr 25 08:15:18 server sshd[2345]: Failed password for root from 10.0.0.42 port 22 ssh2
+Apr 25 08:15:21 server sshd[2345]: maximum authentication attempts exceeded for root from 10.0.0.42 port 22 ssh2
+Apr 25 08:15:21 server sshd[2345]: Disconnecting authenticating user root 10.0.0.42 port 22: Too many authentication failures
+Apr 25 08:20:00 server sshd[3456]: Accepted publickey for deploy from 172.16.0.10 port 22 ssh2
+Apr 25 08:20:01 server sshd[3456]: pam_unix(sshd:session): session opened for user deploy by (uid=0)

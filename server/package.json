@@ -1,0 +1,34 @@
+{
+  "name": "phoenix-server",
+  "version": "1.0.0",
+  "description": "Project Phoenix Backend — Log Processing Pipeline & API",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --forceExit",
+    "test:parsers": "npm test -- --testPathPattern=parsers",
+    "test:detection": "npm test -- --testPathPattern=detection",
+    "test:correlation": "npm test -- --testPathPattern=correlation"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "ws": "^8.18.0",
+    "chokidar": "^3.6.0",
+    "uuid": "^10.0.0",
+    "md-to-pdf": "^5.2.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@jest/globals": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "jest": {
+    "transform": {},
+    "testEnvironment": "node",
+    "extensionsToTreatAsEsm": []
+  }
+}

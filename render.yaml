@@ -8,6 +8,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: SEED_ON_STARTUP
+        value: "true"
       - key: CORS_ORIGIN
         sync: false  # Set manually after frontend is deployed
 

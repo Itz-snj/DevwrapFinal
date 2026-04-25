@@ -1,27 +1,55 @@
 name: Keep Render Alive
 
-# Pings both Render services every 14 minutes to prevent cold starts.
+# Pings both Render services every 10 minutes to prevent cold starts.
 # Render free-tier spins down after 15 min of inactivity.
+# Using */10 instead of */14 to buffer against GitHub's cron delays (up to 15-20 min).
 
 on:
   schedule:
-    # Every 14 minutes, 24/7
-    - cron: '*/14 * * * *'
+    - cron: '*/10 * * * *'
   workflow_dispatch: # Allow manual trigger from GitHub Actions UI
 
 jobs:
   ping:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - name: Ping Backend (phoenix-api)
+      - name: Ping Backend & Frontend
         run: |
-          echo "Pinging backend..."
-          curl -fsS --max-time 30 "${{ secrets.BACKEND_URL }}/api/health" || echo "Backend ping failed (may be starting up)"
+          echo "🔥 Keep-alive ping at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo ""
 
-      - name: Ping Frontend (phoenix-frontend)
-        run: |
-          echo "Pinging frontend..."
-          curl -fsS --max-time 60 "${{ secrets.FRONTEND_URL }}" -o /dev/null || echo "Frontend ping failed (may be starting up)"
+          # ── Backend ping with retries ──
+          backend_ok=false
+          for attempt in 1 2 3; do
+            echo "Pinging backend (attempt $attempt)..."
+            if curl -fsS --max-time 30 --retry 2 "${{ secrets.BACKEND_URL }}/api/health" 2>/dev/null; then
+              echo ""
+              echo "✅ Backend is alive (attempt $attempt)"
+              backend_ok=true
+              break
+            fi
+            echo "⚠️  Backend attempt $attempt failed"
+            [ $attempt -lt 3 ] && echo "Waiting 15s for cold start..." && sleep 15
+          done
 
-      - name: Log timestamp
-        run: echo "Keep-alive ping sent at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo ""
+
+          # ── Frontend ping with retries ──
+          frontend_ok=false
+          for attempt in 1 2 3; do
+            echo "Pinging frontend (attempt $attempt)..."
+            if curl -fsS --max-time 60 --retry 2 "${{ secrets.FRONTEND_URL }}" -o /dev/null 2>/dev/null; then
+              echo "✅ Frontend is alive (attempt $attempt)"
+              frontend_ok=true
+              break
+            fi
+            echo "⚠️  Frontend attempt $attempt failed"
+            [ $attempt -lt 3 ] && echo "Waiting 15s for cold start..." && sleep 15
+          done
+
+          echo ""
+          echo "── Summary ──"
+          $backend_ok  && echo "Backend:  ✅ OK" || echo "Backend:  ❌ FAILED (all retries exhausted)"
+          $frontend_ok && echo "Frontend: ✅ OK" || echo "Frontend: ❌ FAILED (all retries exhausted)"
+          echo "Completed at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"

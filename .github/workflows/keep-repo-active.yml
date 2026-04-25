@@ -1,0 +1,32 @@
+name: Keep Repository Active
+
+# GitHub disables cron-scheduled workflows after 60 days of repo inactivity.
+# This workflow makes a tiny commit on the 1st of every month to keep the repo
+# marked as "active", ensuring the keep-alive cron continues to fire.
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # 1st of every month at midnight UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update heartbeat timestamp
+        run: |
+          echo "Last heartbeat: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > .github/heartbeat.txt
+          echo "Purpose: Keeps repo active so GitHub doesn't disable scheduled workflows." >> .github/heartbeat.txt
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/heartbeat.txt
+          git diff --staged --quiet || git commit -m "chore: monthly heartbeat [skip ci]"
+          git push

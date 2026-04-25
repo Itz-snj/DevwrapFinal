@@ -2,14 +2,20 @@ import express from 'express';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync, readFileSync, readdirSync } from 'fs';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger.js';
 import phase1Routes from './api/phase1.js';
 import phase2Routes from './api/phase2.js';
 import phase3Routes from './api/phase3.js';
+import sampleLogRoutes from './api/sampleLogs.js';
 import { IncidentStore } from './store/IncidentStore.js';
 import { LiveWatchdog } from './realtime/LiveWatchdog.js';
+import { ParserFactory } from './pipeline/ingestion/ParserFactory.js';
+import { RuleEngine } from './pipeline/detection/RuleEngine.js';
+import { CorrelationEngine } from './pipeline/correlation/CorrelationEngine.js';
+import { IpEnricher } from './pipeline/enrichment/IpEnricher.js';
+import { Incident } from './pipeline/schemas.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,6 +68,9 @@ app.use('/api', phase2Routes);
 
 // ─── Phase 3 Routes: Incidents, Reports, Full Pipeline ──────────────
 app.use('/api', phase3Routes);
+
+// ─── Sample Logs Routes: Read-only log file browser for judges ──────
+app.use('/api', sampleLogRoutes);
 
 // ─── Demo Inject Route (triggers live events for showcase) ──────────
 
@@ -125,12 +134,109 @@ app.post('/api/demo/fetch-remote', async (req, res) => {
   }
 });
 
+// ─── Auto-Seed Incidents from Sample Logs ───────────────────────────
+// On startup, if the incident store is empty, run the full pipeline on
+// all bundled sample-logs/ files. This ensures judges always see real
+// data on the deployed frontend — even on Render's ephemeral filesystem.
+async function seedIncidents() {
+  if (incidentStore.count() > 0) {
+    console.log(`   [Seed] Skipping — ${incidentStore.count()} incidents already exist`);
+    return;
+  }
+
+  console.log('   [Seed] No incidents found. Seeding from sample-logs/...');
+
+  const sampleDir = path.join(__dirname, '../../sample-logs');
+  if (!existsSync(sampleDir)) {
+    console.log('   [Seed] sample-logs/ directory not found, skipping');
+    return;
+  }
+
+  const factory = new ParserFactory();
+  const ruleEngine = new RuleEngine();
+  const correlationEngine = new CorrelationEngine();
+  const ipEnricher = new IpEnricher();
+
+  const logFiles = readdirSync(sampleDir).filter(f =>
+    f.endsWith('.log') || f.endsWith('.json')
+  );
+
+  // Strategy: Create one combined incident with ALL log files (cross-correlation)
+  // AND individual incidents per file (so judges see per-source analysis)
+
+  // ── Individual incidents per file ──
+  for (const file of logFiles) {
+    try {
+      const content = readFileSync(path.join(sampleDir, file), 'utf-8');
+      const { events, format } = factory.parseAuto(content, file);
+      const { alerts } = ruleEngine.detectAll(events);
+      const { attackers, attackChains, graphData } = correlationEngine.correlate(events, alerts);
+
+      // Skip IP enrichment for private IPs (sample data uses RFC1918 addresses)
+      // but attempt enrichment for any public IPs
+      try { await ipEnricher.enrichAttackers(attackers); } catch { /* ok */ }
+
+      const incident = new Incident({ events, alerts, attackers, attackChains, graphData });
+      incident.buildSummary();
+      incidentStore.save(incident);
+
+      console.log(`   [Seed] ✅ ${file} → ${events.length} events, ${alerts.length} alerts → Incident ${incident.id}`);
+    } catch (err) {
+      console.error(`   [Seed] ❌ ${file} failed: ${err.message}`);
+    }
+  }
+
+  // ── Combined multi-source incident ──
+  try {
+    let allEvents = [];
+    let allAlerts = [];
+
+    for (const file of logFiles) {
+      const content = readFileSync(path.join(sampleDir, file), 'utf-8');
+      const { events } = factory.parseAuto(content, file);
+      allEvents.push(...events);
+    }
+
+    const { alerts } = ruleEngine.detectAll(allEvents);
+    allAlerts = alerts;
+    const { attackers, attackChains, graphData } = correlationEngine.correlate(allEvents, allAlerts);
+    try { await ipEnricher.enrichAttackers(attackers); } catch { /* ok */ }
+
+    const incident = new Incident({ events: allEvents, alerts: allAlerts, attackers, attackChains, graphData });
+    incident.buildSummary();
+    incidentStore.save(incident);
+
+    console.log(`   [Seed] ✅ Combined (all ${logFiles.length} files) → ${allEvents.length} events, ${allAlerts.length} alerts → Incident ${incident.id}`);
+  } catch (err) {
+    console.error(`   [Seed] ❌ Combined analysis failed: ${err.message}`);
+  }
+
+  console.log(`   [Seed] Done. ${incidentStore.count()} incidents ready.`);
+}
+
 // ─── Start Server & WebSocket ───────────────────────────────────────
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, async () => {
   console.log(`\n🔥 Project Phoenix server running on http://localhost:${PORT}`);
   console.log(`   Health:    http://localhost:${PORT}/api/health`);
   console.log(`   Swagger:   http://localhost:${PORT}/api-docs`);
+  console.log(`   Logs:      http://localhost:${PORT}/api/sample-logs`);
   console.log(`   WebSocket: ws://localhost:${PORT}/ws/live\n`);
+
+  // Auto-seed incidents from sample logs
+  await seedIncidents();
+
+  // ── Self-ping keep-alive for Render free tier ──
+  // Render spins down free services after 15 min of inactivity.
+  // This self-ping prevents that while the server is already running.
+  if (process.env.NODE_ENV === 'production') {
+    const selfUrl = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
+    setInterval(async () => {
+      try {
+        await fetch(`${selfUrl}/api/health`);
+        console.log(`   [KeepAlive] Self-ping OK at ${new Date().toISOString()}`);
+      } catch { /* ignore */ }
+    }, 10 * 60 * 1000); // Every 10 minutes
+  }
 });
 
 // ─── Live Watchdog (WebSocket + File Watcher) ───────────────────────

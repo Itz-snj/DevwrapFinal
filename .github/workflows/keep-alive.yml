@@ -1,0 +1,27 @@
+name: Keep Render Alive
+
+# Pings both Render services every 14 minutes to prevent cold starts.
+# Render free-tier spins down after 15 min of inactivity.
+
+on:
+  schedule:
+    # Every 14 minutes, 24/7
+    - cron: '*/14 * * * *'
+  workflow_dispatch: # Allow manual trigger from GitHub Actions UI
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Backend (phoenix-api)
+        run: |
+          echo "Pinging backend..."
+          curl -fsS --max-time 30 "${{ secrets.BACKEND_URL }}/api/health" || echo "Backend ping failed (may be starting up)"
+
+      - name: Ping Frontend (phoenix-frontend)
+        run: |
+          echo "Pinging frontend..."
+          curl -fsS --max-time 60 "${{ secrets.FRONTEND_URL }}" -o /dev/null || echo "Frontend ping failed (may be starting up)"
+
+      - name: Log timestamp
+        run: echo "Keep-alive ping sent at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"

@@ -51,9 +51,16 @@ function buildVercel() {
     JSON.stringify(funcConfig, null, 2)
   );
   
-  // 6. Create Edge function entrypoint
+  // 6. Copy server assets into the function directory
+  const serverDist = path.join(__dirname, 'dist', 'server');
+  const funcServerDir = path.join(funcDir, 'server');
+  if (fs.existsSync(serverDist)) {
+    fs.cpSync(serverDist, funcServerDir, { recursive: true });
+  }
+
+  // 7. Create Edge function entrypoint
   const edgeEntry = `
-import server from '../../../dist/server/server.js';
+import server from './server/server.js';
 export default server;
 `;
   fs.writeFileSync(

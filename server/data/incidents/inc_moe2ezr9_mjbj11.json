@@ -1,0 +1,1540 @@
+{
+  "id": "inc_moe2ezr9_mjbj11",
+  "createdAt": "2026-04-25T08:16:11.397Z",
+  "status": "analyzed",
+  "summary": {
+    "totalEvents": 23,
+    "totalAlerts": 9,
+    "threatScore": 100,
+    "timeRange": {
+      "start": "2026-04-25T08:02:15.000Z",
+      "end": "2026-04-25T08:20:30.000Z"
+    },
+    "topAttackerIp": "192.168.1.105",
+    "attackTypes": [
+      {
+        "type": "SQL Injection",
+        "count": 2,
+        "severity": "CRITICAL"
+      },
+      {
+        "type": "Path Traversal",
+        "count": 4,
+        "severity": "CRITICAL"
+      },
+      {
+        "type": "XSS",
+        "count": 1,
+        "severity": "HIGH"
+      },
+      {
+        "type": "Brute Force",
+        "count": 2,
+        "severity": "HIGH"
+      }
+    ],
+    "alertsBySeverity": {
+      "CRITICAL": 6,
+      "HIGH": 3,
+      "MEDIUM": 0,
+      "LOW": 0
+    }
+  },
+  "events": [
+    {
+      "timestamp": "2026-04-25T08:02:15.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "POST",
+      "endpoint": "/admin/login",
+      "statusCode": 401,
+      "logLevel": "warn",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:15 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 1,
+      "metadata": {
+        "bodyBytes": 512,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:02:18.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "POST",
+      "endpoint": "/admin/login",
+      "statusCode": 401,
+      "logLevel": "warn",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:18 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 2,
+      "metadata": {
+        "bodyBytes": 512,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:02:21.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "POST",
+      "endpoint": "/admin/login",
+      "statusCode": 401,
+      "logLevel": "warn",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:21 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 3,
+      "metadata": {
+        "bodyBytes": 512,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:02:24.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "POST",
+      "endpoint": "/admin/login",
+      "statusCode": 401,
+      "logLevel": "warn",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:24 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 4,
+      "metadata": {
+        "bodyBytes": 512,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:02:27.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "POST",
+      "endpoint": "/admin/login",
+      "statusCode": 401,
+      "logLevel": "warn",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:27 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 5,
+      "metadata": {
+        "bodyBytes": 512,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:02:30.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "POST",
+      "endpoint": "/admin/login",
+      "statusCode": 200,
+      "logLevel": "info",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:30 +0000] \"POST /admin/login HTTP/1.1\" 200 1024 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 6,
+      "metadata": {
+        "bodyBytes": 1024,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:03:01.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "GET",
+      "endpoint": "/admin/config",
+      "statusCode": 403,
+      "logLevel": "warn",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:03:01 +0000] \"GET /admin/config HTTP/1.1\" 403 256 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 7,
+      "metadata": {
+        "bodyBytes": 256,
+        "referer": "",
+        "rawEndpoint": "/admin/config"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:03:15.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "GET",
+      "endpoint": "/api/users",
+      "statusCode": 200,
+      "logLevel": "info",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:03:15 +0000] \"GET /api/users HTTP/1.1\" 200 8192 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 8,
+      "metadata": {
+        "bodyBytes": 8192,
+        "referer": "",
+        "rawEndpoint": "/api/users"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:03:45.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "GET",
+      "endpoint": "/api/search?q=' OR 1=1 --",
+      "statusCode": 200,
+      "logLevel": "info",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:03:45 +0000] \"GET /api/search?q=%27%20OR%201%3D1%20-- HTTP/1.1\" 200 4096 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 9,
+      "metadata": {
+        "bodyBytes": 4096,
+        "referer": "",
+        "rawEndpoint": "/api/search?q=%27%20OR%201%3D1%20--"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:04:02.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "GET",
+      "endpoint": "/api/search?q=UNION SELECT username,password FROM users",
+      "statusCode": 200,
+      "logLevel": "info",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:02 +0000] \"GET /api/search?q=UNION%20SELECT%20username%2Cpassword%20FROM%20users HTTP/1.1\" 200 2048 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 10,
+      "metadata": {
+        "bodyBytes": 2048,
+        "referer": "",
+        "rawEndpoint": "/api/search?q=UNION%20SELECT%20username%2Cpassword%20FROM%20users"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:04:30.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "GET",
+      "endpoint": "/../../../etc/passwd",
+      "statusCode": 200,
+      "logLevel": "info",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:30 +0000] \"GET /%2e%2e/%2e%2e/%2e%2e/etc/passwd HTTP/1.1\" 200 1024 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 11,
+      "metadata": {
+        "bodyBytes": 1024,
+        "referer": "",
+        "rawEndpoint": "/%2e%2e/%2e%2e/%2e%2e/etc/passwd"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:04:45.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "192.168.1.105",
+      "method": "GET",
+      "endpoint": "/../../etc/shadow",
+      "statusCode": 403,
+      "logLevel": "warn",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+      "user": "",
+      "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:45 +0000] \"GET /../../etc/shadow HTTP/1.1\" 403 256 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+      "lineNumber": 12,
+      "metadata": {
+        "bodyBytes": 256,
+        "referer": "",
+        "rawEndpoint": "/../../etc/shadow"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:15:00.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "10.0.0.42",
+      "method": "GET",
+      "endpoint": "/api/health",
+      "statusCode": 200,
+      "logLevel": "info",
+      "userAgent": "curl/7.68.0",
+      "user": "",
+      "rawLine": "10.0.0.42 - - [25/Apr/2026:08:15:00 +0000] \"GET /api/health HTTP/1.1\" 200 128 \"-\" \"curl/7.68.0\"",
+      "lineNumber": 13,
+      "metadata": {
+        "bodyBytes": 128,
+        "referer": "",
+        "rawEndpoint": "/api/health"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:15:30.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "10.0.0.42",
+      "method": "POST",
+      "endpoint": "/api/search?q=<script>alert('xss')</script>",
+      "statusCode": 400,
+      "logLevel": "warn",
+      "userAgent": "curl/7.68.0",
+      "user": "",
+      "rawLine": "10.0.0.42 - - [25/Apr/2026:08:15:30 +0000] \"POST /api/search?q=<script>alert('xss')</script> HTTP/1.1\" 400 256 \"-\" \"curl/7.68.0\"",
+      "lineNumber": 14,
+      "metadata": {
+        "bodyBytes": 256,
+        "referer": "",
+        "rawEndpoint": "/api/search?q=<script>alert('xss')</script>"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:16:00.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "10.0.0.42",
+      "method": "GET",
+      "endpoint": "/admin/login",
+      "statusCode": 401,
+      "logLevel": "warn",
+      "userAgent": "curl/7.68.0",
+      "user": "",
+      "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:00 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+      "lineNumber": 15,
+      "metadata": {
+        "bodyBytes": 512,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:16:05.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "10.0.0.42",
+      "method": "GET",
+      "endpoint": "/admin/login",
+      "statusCode": 401,
+      "logLevel": "warn",
+      "userAgent": "curl/7.68.0",
+      "user": "",
+      "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:05 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+      "lineNumber": 16,
+      "metadata": {
+        "bodyBytes": 512,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:16:10.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "10.0.0.42",
+      "method": "GET",
+      "endpoint": "/admin/login",
+      "statusCode": 401,
+      "logLevel": "warn",
+      "userAgent": "curl/7.68.0",
+      "user": "",
+      "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:10 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+      "lineNumber": 17,
+      "metadata": {
+        "bodyBytes": 512,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:16:15.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "10.0.0.42",
+      "method": "GET",
+      "endpoint": "/admin/login",
+      "statusCode": 401,
+      "logLevel": "warn",
+      "userAgent": "curl/7.68.0",
+      "user": "",
+      "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:15 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+      "lineNumber": 18,
+      "metadata": {
+        "bodyBytes": 512,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:16:20.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "10.0.0.42",
+      "method": "GET",
+      "endpoint": "/admin/login",
+      "statusCode": 401,
+      "logLevel": "warn",
+      "userAgent": "curl/7.68.0",
+      "user": "",
+      "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:20 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+      "lineNumber": 19,
+      "metadata": {
+        "bodyBytes": 512,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:16:25.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "10.0.0.42",
+      "method": "GET",
+      "endpoint": "/admin/login",
+      "statusCode": 200,
+      "logLevel": "info",
+      "userAgent": "curl/7.68.0",
+      "user": "",
+      "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:25 +0000] \"GET /admin/login HTTP/1.1\" 200 1024 \"-\" \"curl/7.68.0\"",
+      "lineNumber": 20,
+      "metadata": {
+        "bodyBytes": 1024,
+        "referer": "",
+        "rawEndpoint": "/admin/login"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:20:00.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "172.16.0.10",
+      "method": "GET",
+      "endpoint": "/",
+      "statusCode": 200,
+      "logLevel": "info",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "user": "",
+      "rawLine": "172.16.0.10 - - [25/Apr/2026:08:20:00 +0000] \"GET / HTTP/1.1\" 200 4096 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64)\"",
+      "lineNumber": 21,
+      "metadata": {
+        "bodyBytes": 4096,
+        "referer": "",
+        "rawEndpoint": "/"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:20:15.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "172.16.0.10",
+      "method": "GET",
+      "endpoint": "/about",
+      "statusCode": 200,
+      "logLevel": "info",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "user": "",
+      "rawLine": "172.16.0.10 - - [25/Apr/2026:08:20:15 +0000] \"GET /about HTTP/1.1\" 200 2048 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64)\"",
+      "lineNumber": 22,
+      "metadata": {
+        "bodyBytes": 2048,
+        "referer": "",
+        "rawEndpoint": "/about"
+      }
+    },
+    {
+      "timestamp": "2026-04-25T08:20:30.000Z",
+      "source": "nginx",
+      "sourceFile": "nginx-access.log",
+      "ip": "172.16.0.10",
+      "method": "GET",
+      "endpoint": "/contact",
+      "statusCode": 200,
+      "logLevel": "info",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "user": "",
+      "rawLine": "172.16.0.10 - - [25/Apr/2026:08:20:30 +0000] \"GET /contact HTTP/1.1\" 200 1024 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64)\"",
+      "lineNumber": 23,
+      "metadata": {
+        "bodyBytes": 1024,
+        "referer": "",
+        "rawEndpoint": "/contact"
+      }
+    }
+  ],
+  "alerts": [
+    {
+      "id": "alert_1777104971390_j6peu7",
+      "ruleId": "SQLI_TAUTOLOGY",
+      "category": "SQL Injection",
+      "severity": "CRITICAL",
+      "description": "Tautology-based SQL injection (OR 1=1, OR true)",
+      "matchedPattern": "' OR 1=1",
+      "event": {
+        "timestamp": "2026-04-25T08:03:45.000Z",
+        "source": "nginx",
+        "sourceFile": "nginx-access.log",
+        "ip": "192.168.1.105",
+        "method": "GET",
+        "endpoint": "/api/search?q=' OR 1=1 --",
+        "statusCode": 200,
+        "logLevel": "info",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+        "user": "",
+        "rawLine": "192.168.1.105 - - [25/Apr/2026:08:03:45 +0000] \"GET /api/search?q=%27%20OR%201%3D1%20-- HTTP/1.1\" 200 4096 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+        "lineNumber": 9,
+        "metadata": {
+          "bodyBytes": 4096,
+          "referer": "",
+          "rawEndpoint": "/api/search?q=%27%20OR%201%3D1%20--"
+        }
+      }
+    },
+    {
+      "id": "alert_1777104971395_e0s5sl",
+      "ruleId": "SQLI_UNION_SELECT",
+      "category": "SQL Injection",
+      "severity": "CRITICAL",
+      "description": "UNION SELECT injection — attempts to extract data from other tables",
+      "matchedPattern": "UNION SELECT",
+      "event": {
+        "timestamp": "2026-04-25T08:04:02.000Z",
+        "source": "nginx",
+        "sourceFile": "nginx-access.log",
+        "ip": "192.168.1.105",
+        "method": "GET",
+        "endpoint": "/api/search?q=UNION SELECT username,password FROM users",
+        "statusCode": 200,
+        "logLevel": "info",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+        "user": "",
+        "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:02 +0000] \"GET /api/search?q=UNION%20SELECT%20username%2Cpassword%20FROM%20users HTTP/1.1\" 200 2048 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+        "lineNumber": 10,
+        "metadata": {
+          "bodyBytes": 2048,
+          "referer": "",
+          "rawEndpoint": "/api/search?q=UNION%20SELECT%20username%2Cpassword%20FROM%20users"
+        }
+      }
+    },
+    {
+      "id": "alert_1777104971395_10mw4x",
+      "ruleId": "PATH_TRAVERSAL_DOTDOT",
+      "category": "Path Traversal",
+      "severity": "CRITICAL",
+      "description": "Directory traversal using ../ sequences — attempts to access files outside web root",
+      "matchedPattern": "../../../",
+      "event": {
+        "timestamp": "2026-04-25T08:04:30.000Z",
+        "source": "nginx",
+        "sourceFile": "nginx-access.log",
+        "ip": "192.168.1.105",
+        "method": "GET",
+        "endpoint": "/../../../etc/passwd",
+        "statusCode": 200,
+        "logLevel": "info",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+        "user": "",
+        "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:30 +0000] \"GET /%2e%2e/%2e%2e/%2e%2e/etc/passwd HTTP/1.1\" 200 1024 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+        "lineNumber": 11,
+        "metadata": {
+          "bodyBytes": 1024,
+          "referer": "",
+          "rawEndpoint": "/%2e%2e/%2e%2e/%2e%2e/etc/passwd"
+        }
+      }
+    },
+    {
+      "id": "alert_1777104971395_j9127e",
+      "ruleId": "PATH_TRAVERSAL_ETC_PASSWD",
+      "category": "Path Traversal",
+      "severity": "CRITICAL",
+      "description": "Attempt to access /etc/passwd — system user enumeration",
+      "matchedPattern": "/etc/passwd",
+      "event": {
+        "timestamp": "2026-04-25T08:04:30.000Z",
+        "source": "nginx",
+        "sourceFile": "nginx-access.log",
+        "ip": "192.168.1.105",
+        "method": "GET",
+        "endpoint": "/../../../etc/passwd",
+        "statusCode": 200,
+        "logLevel": "info",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+        "user": "",
+        "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:30 +0000] \"GET /%2e%2e/%2e%2e/%2e%2e/etc/passwd HTTP/1.1\" 200 1024 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+        "lineNumber": 11,
+        "metadata": {
+          "bodyBytes": 1024,
+          "referer": "",
+          "rawEndpoint": "/%2e%2e/%2e%2e/%2e%2e/etc/passwd"
+        }
+      }
+    },
+    {
+      "id": "alert_1777104971396_1krkha",
+      "ruleId": "PATH_TRAVERSAL_DOTDOT",
+      "category": "Path Traversal",
+      "severity": "CRITICAL",
+      "description": "Directory traversal using ../ sequences — attempts to access files outside web root",
+      "matchedPattern": "../../",
+      "event": {
+        "timestamp": "2026-04-25T08:04:45.000Z",
+        "source": "nginx",
+        "sourceFile": "nginx-access.log",
+        "ip": "192.168.1.105",
+        "method": "GET",
+        "endpoint": "/../../etc/shadow",
+        "statusCode": 403,
+        "logLevel": "warn",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+        "user": "",
+        "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:45 +0000] \"GET /../../etc/shadow HTTP/1.1\" 403 256 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+        "lineNumber": 12,
+        "metadata": {
+          "bodyBytes": 256,
+          "referer": "",
+          "rawEndpoint": "/../../etc/shadow"
+        }
+      }
+    },
+    {
+      "id": "alert_1777104971396_unkgzk",
+      "ruleId": "PATH_TRAVERSAL_ETC_PASSWD",
+      "category": "Path Traversal",
+      "severity": "CRITICAL",
+      "description": "Attempt to access /etc/passwd — system user enumeration",
+      "matchedPattern": "/etc/shadow",
+      "event": {
+        "timestamp": "2026-04-25T08:04:45.000Z",
+        "source": "nginx",
+        "sourceFile": "nginx-access.log",
+        "ip": "192.168.1.105",
+        "method": "GET",
+        "endpoint": "/../../etc/shadow",
+        "statusCode": 403,
+        "logLevel": "warn",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+        "user": "",
+        "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:45 +0000] \"GET /../../etc/shadow HTTP/1.1\" 403 256 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+        "lineNumber": 12,
+        "metadata": {
+          "bodyBytes": 256,
+          "referer": "",
+          "rawEndpoint": "/../../etc/shadow"
+        }
+      }
+    },
+    {
+      "id": "alert_1777104971396_nvcpmx",
+      "ruleId": "XSS_SCRIPT_TAG",
+      "category": "XSS",
+      "severity": "HIGH",
+      "description": "Script tag injection — classic XSS attack vector",
+      "matchedPattern": "<script>",
+      "event": {
+        "timestamp": "2026-04-25T08:15:30.000Z",
+        "source": "nginx",
+        "sourceFile": "nginx-access.log",
+        "ip": "10.0.0.42",
+        "method": "POST",
+        "endpoint": "/api/search?q=<script>alert('xss')</script>",
+        "statusCode": 400,
+        "logLevel": "warn",
+        "userAgent": "curl/7.68.0",
+        "user": "",
+        "rawLine": "10.0.0.42 - - [25/Apr/2026:08:15:30 +0000] \"POST /api/search?q=<script>alert('xss')</script> HTTP/1.1\" 400 256 \"-\" \"curl/7.68.0\"",
+        "lineNumber": 14,
+        "metadata": {
+          "bodyBytes": 256,
+          "referer": "",
+          "rawEndpoint": "/api/search?q=<script>alert('xss')</script>"
+        }
+      }
+    },
+    {
+      "id": "alert_1777104971396_94wg7a",
+      "ruleId": "BRUTE_FORCE_LOGIN",
+      "category": "Brute Force",
+      "severity": "HIGH",
+      "description": "Multiple failed login attempts from the same IP — possible brute force attack (5 events from 192.168.1.105 in 300s)",
+      "matchedPattern": "5 events in 300s window",
+      "event": {
+        "timestamp": "2026-04-25T08:02:27.000Z",
+        "source": "nginx",
+        "sourceFile": "nginx-access.log",
+        "ip": "192.168.1.105",
+        "method": "POST",
+        "endpoint": "/admin/login",
+        "statusCode": 401,
+        "logLevel": "warn",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+        "user": "",
+        "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:27 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+        "lineNumber": 5,
+        "metadata": {
+          "bodyBytes": 512,
+          "referer": "",
+          "rawEndpoint": "/admin/login"
+        }
+      }
+    },
+    {
+      "id": "alert_1777104971396_6yc4aj",
+      "ruleId": "BRUTE_FORCE_LOGIN",
+      "category": "Brute Force",
+      "severity": "HIGH",
+      "description": "Multiple failed login attempts from the same IP — possible brute force attack (5 events from 10.0.0.42 in 300s)",
+      "matchedPattern": "5 events in 300s window",
+      "event": {
+        "timestamp": "2026-04-25T08:16:20.000Z",
+        "source": "nginx",
+        "sourceFile": "nginx-access.log",
+        "ip": "10.0.0.42",
+        "method": "GET",
+        "endpoint": "/admin/login",
+        "statusCode": 401,
+        "logLevel": "warn",
+        "userAgent": "curl/7.68.0",
+        "user": "",
+        "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:20 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+        "lineNumber": 19,
+        "metadata": {
+          "bodyBytes": 512,
+          "referer": "",
+          "rawEndpoint": "/admin/login"
+        }
+      }
+    }
+  ],
+  "attackers": [
+    {
+      "ip": "192.168.1.105",
+      "threatScore": 100,
+      "totalRequests": 12,
+      "alerts": 7,
+      "geo": null,
+      "userAgents": [
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"
+      ],
+      "firstSeen": "2026-04-25T08:02:15.000Z",
+      "lastSeen": "2026-04-25T08:04:45.000Z",
+      "targetedEndpoints": [
+        "/admin/login",
+        "/admin/config",
+        "/api/users",
+        "/api/search?q=' OR 1=1 --",
+        "/api/search?q=UNION SELECT username,password FROM users",
+        "/../../../etc/passwd",
+        "/../../etc/shadow"
+      ],
+      "attackTypes": [
+        "SQL Injection",
+        "Path Traversal",
+        "Brute Force"
+      ]
+    },
+    {
+      "ip": "10.0.0.42",
+      "threatScore": 55,
+      "totalRequests": 8,
+      "alerts": 2,
+      "geo": null,
+      "userAgents": [
+        "curl/7.68.0"
+      ],
+      "firstSeen": "2026-04-25T08:15:00.000Z",
+      "lastSeen": "2026-04-25T08:16:25.000Z",
+      "targetedEndpoints": [
+        "/api/health",
+        "/api/search?q=<script>alert('xss')</script>",
+        "/admin/login"
+      ],
+      "attackTypes": [
+        "XSS",
+        "Brute Force"
+      ]
+    }
+  ],
+  "attackChains": [
+    {
+      "id": "chain_1777104971396_4orvkc",
+      "ip": "192.168.1.105",
+      "events": [
+        {
+          "timestamp": "2026-04-25T08:02:15.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "192.168.1.105",
+          "method": "POST",
+          "endpoint": "/admin/login",
+          "statusCode": 401,
+          "logLevel": "warn",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+          "user": "",
+          "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:15 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+          "lineNumber": 1,
+          "metadata": {
+            "bodyBytes": 512,
+            "referer": "",
+            "rawEndpoint": "/admin/login"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:02:18.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "192.168.1.105",
+          "method": "POST",
+          "endpoint": "/admin/login",
+          "statusCode": 401,
+          "logLevel": "warn",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+          "user": "",
+          "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:18 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+          "lineNumber": 2,
+          "metadata": {
+            "bodyBytes": 512,
+            "referer": "",
+            "rawEndpoint": "/admin/login"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:02:21.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "192.168.1.105",
+          "method": "POST",
+          "endpoint": "/admin/login",
+          "statusCode": 401,
+          "logLevel": "warn",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+          "user": "",
+          "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:21 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+          "lineNumber": 3,
+          "metadata": {
+            "bodyBytes": 512,
+            "referer": "",
+            "rawEndpoint": "/admin/login"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:02:24.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "192.168.1.105",
+          "method": "POST",
+          "endpoint": "/admin/login",
+          "statusCode": 401,
+          "logLevel": "warn",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+          "user": "",
+          "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:24 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+          "lineNumber": 4,
+          "metadata": {
+            "bodyBytes": 512,
+            "referer": "",
+            "rawEndpoint": "/admin/login"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:02:27.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "192.168.1.105",
+          "method": "POST",
+          "endpoint": "/admin/login",
+          "statusCode": 401,
+          "logLevel": "warn",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+          "user": "",
+          "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:27 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+          "lineNumber": 5,
+          "metadata": {
+            "bodyBytes": 512,
+            "referer": "",
+            "rawEndpoint": "/admin/login"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:03:01.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "192.168.1.105",
+          "method": "GET",
+          "endpoint": "/admin/config",
+          "statusCode": 403,
+          "logLevel": "warn",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+          "user": "",
+          "rawLine": "192.168.1.105 - - [25/Apr/2026:08:03:01 +0000] \"GET /admin/config HTTP/1.1\" 403 256 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+          "lineNumber": 7,
+          "metadata": {
+            "bodyBytes": 256,
+            "referer": "",
+            "rawEndpoint": "/admin/config"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:03:45.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "192.168.1.105",
+          "method": "GET",
+          "endpoint": "/api/search?q=' OR 1=1 --",
+          "statusCode": 200,
+          "logLevel": "info",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+          "user": "",
+          "rawLine": "192.168.1.105 - - [25/Apr/2026:08:03:45 +0000] \"GET /api/search?q=%27%20OR%201%3D1%20-- HTTP/1.1\" 200 4096 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+          "lineNumber": 9,
+          "metadata": {
+            "bodyBytes": 4096,
+            "referer": "",
+            "rawEndpoint": "/api/search?q=%27%20OR%201%3D1%20--"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:04:02.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "192.168.1.105",
+          "method": "GET",
+          "endpoint": "/api/search?q=UNION SELECT username,password FROM users",
+          "statusCode": 200,
+          "logLevel": "info",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+          "user": "",
+          "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:02 +0000] \"GET /api/search?q=UNION%20SELECT%20username%2Cpassword%20FROM%20users HTTP/1.1\" 200 2048 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+          "lineNumber": 10,
+          "metadata": {
+            "bodyBytes": 2048,
+            "referer": "",
+            "rawEndpoint": "/api/search?q=UNION%20SELECT%20username%2Cpassword%20FROM%20users"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:04:30.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "192.168.1.105",
+          "method": "GET",
+          "endpoint": "/../../../etc/passwd",
+          "statusCode": 200,
+          "logLevel": "info",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+          "user": "",
+          "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:30 +0000] \"GET /%2e%2e/%2e%2e/%2e%2e/etc/passwd HTTP/1.1\" 200 1024 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+          "lineNumber": 11,
+          "metadata": {
+            "bodyBytes": 1024,
+            "referer": "",
+            "rawEndpoint": "/%2e%2e/%2e%2e/%2e%2e/etc/passwd"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:04:45.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "192.168.1.105",
+          "method": "GET",
+          "endpoint": "/../../etc/shadow",
+          "statusCode": 403,
+          "logLevel": "warn",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+          "user": "",
+          "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:45 +0000] \"GET /../../etc/shadow HTTP/1.1\" 403 256 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+          "lineNumber": 12,
+          "metadata": {
+            "bodyBytes": 256,
+            "referer": "",
+            "rawEndpoint": "/../../etc/shadow"
+          }
+        }
+      ],
+      "alerts": [
+        {
+          "id": "alert_1777104971396_94wg7a",
+          "ruleId": "BRUTE_FORCE_LOGIN",
+          "category": "Brute Force",
+          "severity": "HIGH",
+          "description": "Multiple failed login attempts from the same IP — possible brute force attack (5 events from 192.168.1.105 in 300s)",
+          "matchedPattern": "5 events in 300s window",
+          "event": {
+            "timestamp": "2026-04-25T08:02:27.000Z",
+            "source": "nginx",
+            "sourceFile": "nginx-access.log",
+            "ip": "192.168.1.105",
+            "method": "POST",
+            "endpoint": "/admin/login",
+            "statusCode": 401,
+            "logLevel": "warn",
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+            "user": "",
+            "rawLine": "192.168.1.105 - - [25/Apr/2026:08:02:27 +0000] \"POST /admin/login HTTP/1.1\" 401 512 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+            "lineNumber": 5,
+            "metadata": {
+              "bodyBytes": 512,
+              "referer": "",
+              "rawEndpoint": "/admin/login"
+            }
+          }
+        },
+        {
+          "id": "alert_1777104971390_j6peu7",
+          "ruleId": "SQLI_TAUTOLOGY",
+          "category": "SQL Injection",
+          "severity": "CRITICAL",
+          "description": "Tautology-based SQL injection (OR 1=1, OR true)",
+          "matchedPattern": "' OR 1=1",
+          "event": {
+            "timestamp": "2026-04-25T08:03:45.000Z",
+            "source": "nginx",
+            "sourceFile": "nginx-access.log",
+            "ip": "192.168.1.105",
+            "method": "GET",
+            "endpoint": "/api/search?q=' OR 1=1 --",
+            "statusCode": 200,
+            "logLevel": "info",
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+            "user": "",
+            "rawLine": "192.168.1.105 - - [25/Apr/2026:08:03:45 +0000] \"GET /api/search?q=%27%20OR%201%3D1%20-- HTTP/1.1\" 200 4096 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+            "lineNumber": 9,
+            "metadata": {
+              "bodyBytes": 4096,
+              "referer": "",
+              "rawEndpoint": "/api/search?q=%27%20OR%201%3D1%20--"
+            }
+          }
+        },
+        {
+          "id": "alert_1777104971395_e0s5sl",
+          "ruleId": "SQLI_UNION_SELECT",
+          "category": "SQL Injection",
+          "severity": "CRITICAL",
+          "description": "UNION SELECT injection — attempts to extract data from other tables",
+          "matchedPattern": "UNION SELECT",
+          "event": {
+            "timestamp": "2026-04-25T08:04:02.000Z",
+            "source": "nginx",
+            "sourceFile": "nginx-access.log",
+            "ip": "192.168.1.105",
+            "method": "GET",
+            "endpoint": "/api/search?q=UNION SELECT username,password FROM users",
+            "statusCode": 200,
+            "logLevel": "info",
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+            "user": "",
+            "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:02 +0000] \"GET /api/search?q=UNION%20SELECT%20username%2Cpassword%20FROM%20users HTTP/1.1\" 200 2048 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+            "lineNumber": 10,
+            "metadata": {
+              "bodyBytes": 2048,
+              "referer": "",
+              "rawEndpoint": "/api/search?q=UNION%20SELECT%20username%2Cpassword%20FROM%20users"
+            }
+          }
+        },
+        {
+          "id": "alert_1777104971395_10mw4x",
+          "ruleId": "PATH_TRAVERSAL_DOTDOT",
+          "category": "Path Traversal",
+          "severity": "CRITICAL",
+          "description": "Directory traversal using ../ sequences — attempts to access files outside web root",
+          "matchedPattern": "../../../",
+          "event": {
+            "timestamp": "2026-04-25T08:04:30.000Z",
+            "source": "nginx",
+            "sourceFile": "nginx-access.log",
+            "ip": "192.168.1.105",
+            "method": "GET",
+            "endpoint": "/../../../etc/passwd",
+            "statusCode": 200,
+            "logLevel": "info",
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+            "user": "",
+            "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:30 +0000] \"GET /%2e%2e/%2e%2e/%2e%2e/etc/passwd HTTP/1.1\" 200 1024 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+            "lineNumber": 11,
+            "metadata": {
+              "bodyBytes": 1024,
+              "referer": "",
+              "rawEndpoint": "/%2e%2e/%2e%2e/%2e%2e/etc/passwd"
+            }
+          }
+        },
+        {
+          "id": "alert_1777104971395_j9127e",
+          "ruleId": "PATH_TRAVERSAL_ETC_PASSWD",
+          "category": "Path Traversal",
+          "severity": "CRITICAL",
+          "description": "Attempt to access /etc/passwd — system user enumeration",
+          "matchedPattern": "/etc/passwd",
+          "event": {
+            "timestamp": "2026-04-25T08:04:30.000Z",
+            "source": "nginx",
+            "sourceFile": "nginx-access.log",
+            "ip": "192.168.1.105",
+            "method": "GET",
+            "endpoint": "/../../../etc/passwd",
+            "statusCode": 200,
+            "logLevel": "info",
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+            "user": "",
+            "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:30 +0000] \"GET /%2e%2e/%2e%2e/%2e%2e/etc/passwd HTTP/1.1\" 200 1024 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+            "lineNumber": 11,
+            "metadata": {
+              "bodyBytes": 1024,
+              "referer": "",
+              "rawEndpoint": "/%2e%2e/%2e%2e/%2e%2e/etc/passwd"
+            }
+          }
+        },
+        {
+          "id": "alert_1777104971396_1krkha",
+          "ruleId": "PATH_TRAVERSAL_DOTDOT",
+          "category": "Path Traversal",
+          "severity": "CRITICAL",
+          "description": "Directory traversal using ../ sequences — attempts to access files outside web root",
+          "matchedPattern": "../../",
+          "event": {
+            "timestamp": "2026-04-25T08:04:45.000Z",
+            "source": "nginx",
+            "sourceFile": "nginx-access.log",
+            "ip": "192.168.1.105",
+            "method": "GET",
+            "endpoint": "/../../etc/shadow",
+            "statusCode": 403,
+            "logLevel": "warn",
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+            "user": "",
+            "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:45 +0000] \"GET /../../etc/shadow HTTP/1.1\" 403 256 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+            "lineNumber": 12,
+            "metadata": {
+              "bodyBytes": 256,
+              "referer": "",
+              "rawEndpoint": "/../../etc/shadow"
+            }
+          }
+        },
+        {
+          "id": "alert_1777104971396_unkgzk",
+          "ruleId": "PATH_TRAVERSAL_ETC_PASSWD",
+          "category": "Path Traversal",
+          "severity": "CRITICAL",
+          "description": "Attempt to access /etc/passwd — system user enumeration",
+          "matchedPattern": "/etc/shadow",
+          "event": {
+            "timestamp": "2026-04-25T08:04:45.000Z",
+            "source": "nginx",
+            "sourceFile": "nginx-access.log",
+            "ip": "192.168.1.105",
+            "method": "GET",
+            "endpoint": "/../../etc/shadow",
+            "statusCode": 403,
+            "logLevel": "warn",
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+            "user": "",
+            "rawLine": "192.168.1.105 - - [25/Apr/2026:08:04:45 +0000] \"GET /../../etc/shadow HTTP/1.1\" 403 256 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36\"",
+            "lineNumber": 12,
+            "metadata": {
+              "bodyBytes": 256,
+              "referer": "",
+              "rawEndpoint": "/../../etc/shadow"
+            }
+          }
+        }
+      ],
+      "threatScore": 100,
+      "startTime": "2026-04-25T08:02:15.000Z",
+      "endTime": "2026-04-25T08:04:45.000Z",
+      "description": "Attack chain: Brute Force → SQL Injection → Path Traversal"
+    },
+    {
+      "id": "chain_1777104971397_zycqzb",
+      "ip": "10.0.0.42",
+      "events": [
+        {
+          "timestamp": "2026-04-25T08:15:30.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "10.0.0.42",
+          "method": "POST",
+          "endpoint": "/api/search?q=<script>alert('xss')</script>",
+          "statusCode": 400,
+          "logLevel": "warn",
+          "userAgent": "curl/7.68.0",
+          "user": "",
+          "rawLine": "10.0.0.42 - - [25/Apr/2026:08:15:30 +0000] \"POST /api/search?q=<script>alert('xss')</script> HTTP/1.1\" 400 256 \"-\" \"curl/7.68.0\"",
+          "lineNumber": 14,
+          "metadata": {
+            "bodyBytes": 256,
+            "referer": "",
+            "rawEndpoint": "/api/search?q=<script>alert('xss')</script>"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:16:00.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "10.0.0.42",
+          "method": "GET",
+          "endpoint": "/admin/login",
+          "statusCode": 401,
+          "logLevel": "warn",
+          "userAgent": "curl/7.68.0",
+          "user": "",
+          "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:00 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+          "lineNumber": 15,
+          "metadata": {
+            "bodyBytes": 512,
+            "referer": "",
+            "rawEndpoint": "/admin/login"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:16:05.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "10.0.0.42",
+          "method": "GET",
+          "endpoint": "/admin/login",
+          "statusCode": 401,
+          "logLevel": "warn",
+          "userAgent": "curl/7.68.0",
+          "user": "",
+          "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:05 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+          "lineNumber": 16,
+          "metadata": {
+            "bodyBytes": 512,
+            "referer": "",
+            "rawEndpoint": "/admin/login"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:16:10.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "10.0.0.42",
+          "method": "GET",
+          "endpoint": "/admin/login",
+          "statusCode": 401,
+          "logLevel": "warn",
+          "userAgent": "curl/7.68.0",
+          "user": "",
+          "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:10 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+          "lineNumber": 17,
+          "metadata": {
+            "bodyBytes": 512,
+            "referer": "",
+            "rawEndpoint": "/admin/login"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:16:15.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "10.0.0.42",
+          "method": "GET",
+          "endpoint": "/admin/login",
+          "statusCode": 401,
+          "logLevel": "warn",
+          "userAgent": "curl/7.68.0",
+          "user": "",
+          "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:15 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+          "lineNumber": 18,
+          "metadata": {
+            "bodyBytes": 512,
+            "referer": "",
+            "rawEndpoint": "/admin/login"
+          }
+        },
+        {
+          "timestamp": "2026-04-25T08:16:20.000Z",
+          "source": "nginx",
+          "sourceFile": "nginx-access.log",
+          "ip": "10.0.0.42",
+          "method": "GET",
+          "endpoint": "/admin/login",
+          "statusCode": 401,
+          "logLevel": "warn",
+          "userAgent": "curl/7.68.0",
+          "user": "",
+          "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:20 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+          "lineNumber": 19,
+          "metadata": {
+            "bodyBytes": 512,
+            "referer": "",
+            "rawEndpoint": "/admin/login"
+          }
+        }
+      ],
+      "alerts": [
+        {
+          "id": "alert_1777104971396_nvcpmx",
+          "ruleId": "XSS_SCRIPT_TAG",
+          "category": "XSS",
+          "severity": "HIGH",
+          "description": "Script tag injection — classic XSS attack vector",
+          "matchedPattern": "<script>",
+          "event": {
+            "timestamp": "2026-04-25T08:15:30.000Z",
+            "source": "nginx",
+            "sourceFile": "nginx-access.log",
+            "ip": "10.0.0.42",
+            "method": "POST",
+            "endpoint": "/api/search?q=<script>alert('xss')</script>",
+            "statusCode": 400,
+            "logLevel": "warn",
+            "userAgent": "curl/7.68.0",
+            "user": "",
+            "rawLine": "10.0.0.42 - - [25/Apr/2026:08:15:30 +0000] \"POST /api/search?q=<script>alert('xss')</script> HTTP/1.1\" 400 256 \"-\" \"curl/7.68.0\"",
+            "lineNumber": 14,
+            "metadata": {
+              "bodyBytes": 256,
+              "referer": "",
+              "rawEndpoint": "/api/search?q=<script>alert('xss')</script>"
+            }
+          }
+        },
+        {
+          "id": "alert_1777104971396_6yc4aj",
+          "ruleId": "BRUTE_FORCE_LOGIN",
+          "category": "Brute Force",
+          "severity": "HIGH",
+          "description": "Multiple failed login attempts from the same IP — possible brute force attack (5 events from 10.0.0.42 in 300s)",
+          "matchedPattern": "5 events in 300s window",
+          "event": {
+            "timestamp": "2026-04-25T08:16:20.000Z",
+            "source": "nginx",
+            "sourceFile": "nginx-access.log",
+            "ip": "10.0.0.42",
+            "method": "GET",
+            "endpoint": "/admin/login",
+            "statusCode": 401,
+            "logLevel": "warn",
+            "userAgent": "curl/7.68.0",
+            "user": "",
+            "rawLine": "10.0.0.42 - - [25/Apr/2026:08:16:20 +0000] \"GET /admin/login HTTP/1.1\" 401 512 \"-\" \"curl/7.68.0\"",
+            "lineNumber": 19,
+            "metadata": {
+              "bodyBytes": 512,
+              "referer": "",
+              "rawEndpoint": "/admin/login"
+            }
+          }
+        }
+      ],
+      "threatScore": 30,
+      "startTime": "2026-04-25T08:15:30.000Z",
+      "endTime": "2026-04-25T08:16:20.000Z",
+      "description": "Attack chain: XSS → Brute Force"
+    }
+  ],
+  "graphData": {
+    "nodes": [
+      {
+        "id": "ip_192.168.1.105",
+        "type": "attacker",
+        "label": "192.168.1.105",
+        "threatScore": 100,
+        "geo": null
+      },
+      {
+        "id": "ep_/admin/login",
+        "type": "endpoint",
+        "label": "/admin/login",
+        "requestCount": 6,
+        "severity": "HIGH"
+      },
+      {
+        "id": "res_login",
+        "type": "resource",
+        "label": "login",
+        "severity": "CRITICAL"
+      },
+      {
+        "id": "ep_/admin/config",
+        "type": "endpoint",
+        "label": "/admin/config",
+        "requestCount": 1,
+        "severity": "LOW"
+      },
+      {
+        "id": "ep_/api/users",
+        "type": "endpoint",
+        "label": "/api/users",
+        "requestCount": 1,
+        "severity": "LOW"
+      },
+      {
+        "id": "ep_/api/search?q=' OR 1=1 --",
+        "type": "endpoint",
+        "label": "/api/search?q=' OR 1=1 --",
+        "requestCount": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "id": "res_search?q=' OR 1=1 --",
+        "type": "resource",
+        "label": "search?q=' OR 1=1 --",
+        "severity": "CRITICAL"
+      },
+      {
+        "id": "ep_/api/search?q=UNION SELECT username,password FROM users",
+        "type": "endpoint",
+        "label": "/api/search?q=UNION SELECT username,password FROM users",
+        "requestCount": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "id": "res_search?q=UNION SELECT username,password FROM users",
+        "type": "resource",
+        "label": "search?q=UNION SELECT username,password FROM users",
+        "severity": "CRITICAL"
+      },
+      {
+        "id": "ep_/../../../etc/passwd",
+        "type": "endpoint",
+        "label": "/../../../etc/passwd",
+        "requestCount": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "id": "res_passwd",
+        "type": "resource",
+        "label": "passwd",
+        "severity": "CRITICAL"
+      },
+      {
+        "id": "ep_/../../etc/shadow",
+        "type": "endpoint",
+        "label": "/../../etc/shadow",
+        "requestCount": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "id": "ip_10.0.0.42",
+        "type": "attacker",
+        "label": "10.0.0.42",
+        "threatScore": 55,
+        "geo": null
+      },
+      {
+        "id": "ep_/api/health",
+        "type": "endpoint",
+        "label": "/api/health",
+        "requestCount": 1,
+        "severity": "LOW"
+      },
+      {
+        "id": "ep_/api/search?q=<script>alert('xss')</script>",
+        "type": "endpoint",
+        "label": "/api/search?q=<script>alert('xss')</script>",
+        "requestCount": 1,
+        "severity": "HIGH"
+      }
+    ],
+    "edges": [
+      {
+        "source": "ip_192.168.1.105",
+        "target": "ep_/admin/login",
+        "weight": 6,
+        "severity": "HIGH"
+      },
+      {
+        "source": "ep_/admin/login",
+        "target": "res_login",
+        "weight": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "source": "ip_192.168.1.105",
+        "target": "ep_/admin/config",
+        "weight": 1,
+        "severity": "LOW"
+      },
+      {
+        "source": "ip_192.168.1.105",
+        "target": "ep_/api/users",
+        "weight": 1,
+        "severity": "LOW"
+      },
+      {
+        "source": "ip_192.168.1.105",
+        "target": "ep_/api/search?q=' OR 1=1 --",
+        "weight": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "source": "ep_/api/search?q=' OR 1=1 --",
+        "target": "res_search?q=' OR 1=1 --",
+        "weight": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "source": "ip_192.168.1.105",
+        "target": "ep_/api/search?q=UNION SELECT username,password FROM users",
+        "weight": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "source": "ep_/api/search?q=UNION SELECT username,password FROM users",
+        "target": "res_search?q=UNION SELECT username,password FROM users",
+        "weight": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "source": "ip_192.168.1.105",
+        "target": "ep_/../../../etc/passwd",
+        "weight": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "source": "ep_/../../../etc/passwd",
+        "target": "res_passwd",
+        "weight": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "source": "ip_192.168.1.105",
+        "target": "ep_/../../etc/shadow",
+        "weight": 1,
+        "severity": "CRITICAL"
+      },
+      {
+        "source": "ip_10.0.0.42",
+        "target": "ep_/api/health",
+        "weight": 1,
+        "severity": "LOW"
+      },
+      {
+        "source": "ip_10.0.0.42",
+        "target": "ep_/api/search?q=<script>alert('xss')</script>",
+        "weight": 1,
+        "severity": "HIGH"
+      },
+      {
+        "source": "ip_10.0.0.42",
+        "target": "ep_/admin/login",
+        "weight": 6,
+        "severity": "HIGH"
+      }
+    ]
+  }
+}

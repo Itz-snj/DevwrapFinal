@@ -19,8 +19,8 @@ across multiple log sources using deterministic, rule-based logic.
 | Phase | Status | Description |
 |-------|--------|-------------|
 | **Phase 1** | ✅ Live | Foundation — Parsing, Deobfuscation, Format Detection |
-| **Phase 2** | 🔜 | Detection & Correlation — Regex Vault, Attack Chains |
-| **Phase 3** | 🔜 | Full Analysis Pipeline — Upload & Analyze |
+| **Phase 2** | ✅ Live | Detection & Correlation — Regex Vault, Attack Chains |
+| **Phase 3** | ✅ Live | Incidents, Reports, WebSocket Live Monitor |
 | **Phase 4** | 🔜 | Report Generation — PDF/Markdown |
     `,
     version: '1.0.0',
@@ -42,6 +42,14 @@ across multiple log sources using deterministic, rule-based logic.
     {
       name: 'Phase 1 — Parsing',
       description: 'Log ingestion, format detection, and deobfuscation'
+    },
+    {
+      name: 'Phase 2 — Detection & Correlation',
+      description: 'Threat detection, event correlation, attack chain analysis, and IP intelligence'
+    },
+    {
+      name: 'Phase 3 — Incidents & Reports',
+      description: 'Incident management, forensic reports, timeline, blast radius graph, and real-time monitoring'
     }
   ],
   paths: {
@@ -389,6 +397,434 @@ Useful for testing how the pipeline handles encoded attack payloads.`,
           }
         }
       }
+    },
+
+    // ─── Phase 2: Detection ──────────────────────────────
+    '/api/rules': {
+      get: {
+        tags: ['Phase 2 — Detection & Correlation'],
+        summary: 'List loaded detection rules',
+        description: 'Returns statistics about all loaded detection rules: total count, breakdown by type and category.',
+        operationId: 'listRules',
+        responses: {
+          200: {
+            description: 'Rule statistics',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    totalRules: { type: 'integer', example: 28 },
+                    regexRules: { type: 'integer', example: 25 },
+                    aggregationRules: { type: 'integer', example: 3 },
+                    categories: { type: 'object', example: { 'SQL Injection': 9, 'XSS': 6, 'Path Traversal': 5 } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    '/api/detect-threats': {
+      post: {
+        tags: ['Phase 2 — Detection & Correlation'],
+        summary: 'Detect threats in log content',
+        description: 'Parses log content and runs all detection rules (regex + aggregation) against the events. Returns alerts grouped by severity and category.',
+        operationId: 'detectThreats',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['content'],
+                properties: {
+                  content: { type: 'string', description: 'Raw log content' },
+                  format: { type: 'string', enum: ['nginx', 'auth', 'json'] },
+                  sourceFile: { type: 'string', example: 'access.log' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Detection results',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    totalEvents: { type: 'integer' },
+                    totalAlerts: { type: 'integer' },
+                    alertsBySeverity: { type: 'object', example: { CRITICAL: 5, HIGH: 3, MEDIUM: 2, LOW: 0 } },
+                    alertsByCategory: { type: 'object', example: { 'SQL Injection': 4, 'Path Traversal': 3 } },
+                    alerts: { type: 'array', items: { $ref: '#/components/schemas/Alert' } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    '/api/correlate': {
+      post: {
+        tags: ['Phase 2 — Detection & Correlation'],
+        summary: 'Correlate events across log sources',
+        description: 'Parses → Detects → Correlates events. Groups by IP, builds attack chains using sliding window analysis, computes threat scores, and generates blast radius graph data.',
+        operationId: 'correlateEvents',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['content'],
+                properties: {
+                  content: { type: 'string' },
+                  format: { type: 'string', enum: ['nginx', 'auth', 'json'] },
+                  sourceFile: { type: 'string' },
+                  windowSeconds: { type: 'integer', description: 'Sliding window size in seconds (default: 300)', example: 300 }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Correlation results',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    totalEvents: { type: 'integer' },
+                    totalAlerts: { type: 'integer' },
+                    attackers: { type: 'array', items: { $ref: '#/components/schemas/AttackerProfile' } },
+                    attackChains: { type: 'array', items: { type: 'object' } },
+                    correlationAlerts: { type: 'array', items: { type: 'object' } },
+                    graphData: { $ref: '#/components/schemas/GraphData' }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    '/api/analyze/full': {
+      post: {
+        tags: ['Phase 2 — Detection & Correlation'],
+        summary: 'Full analysis pipeline',
+        description: 'Complete pipeline: Parse → Detect → Correlate → Enrich (IP geo) → Store as Incident. Returns a full incident report.',
+        operationId: 'analyzeFullPipeline',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['content'],
+                properties: {
+                  content: { type: 'string', description: 'Raw log content' },
+                  format: { type: 'string', enum: ['nginx', 'auth', 'json'] },
+                  sourceFile: { type: 'string' },
+                  enrichIps: { type: 'boolean', description: 'Enable IP geolocation enrichment (default: true)', default: true }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Full analysis results with incident ID',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    incidentId: { type: 'string', example: 'inc_1714039200000_abc123' },
+                    format: { type: 'string' },
+                    summary: { type: 'object' },
+                    attackers: { type: 'array', items: { $ref: '#/components/schemas/AttackerProfile' } },
+                    attackChains: { type: 'array', items: { type: 'object' } },
+                    correlationAlerts: { type: 'array' },
+                    graphData: { $ref: '#/components/schemas/GraphData' },
+                    alertsBySeverity: { type: 'object' }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    '/api/analyze/sample': {
+      get: {
+        tags: ['Phase 2 — Detection & Correlation'],
+        summary: 'Analyze a bundled sample log file',
+        description: 'Runs the full analysis pipeline on one of the bundled sample log files.',
+        operationId: 'analyzeSampleLog',
+        parameters: [
+          {
+            name: 'file',
+            in: 'query',
+            required: true,
+            schema: { type: 'string', enum: ['nginx-access.log', 'auth.log', 'app-events.json'] }
+          },
+          {
+            name: 'enrichIps',
+            in: 'query',
+            schema: { type: 'string', enum: ['true', 'false'], default: 'false' }
+          }
+        ],
+        responses: {
+          200: {
+            description: 'Full analysis results for sample file'
+          }
+        }
+      }
+    },
+
+    '/api/ip/{address}': {
+      get: {
+        tags: ['Phase 2 — Detection & Correlation'],
+        summary: 'Lookup IP geolocation',
+        description: 'Returns geolocation, ISP, and organization data for a given IP address. Uses ip-api.com with caching.',
+        operationId: 'lookupIp',
+        parameters: [
+          {
+            name: 'address',
+            in: 'path',
+            required: true,
+            schema: { type: 'string', example: '8.8.8.8' },
+            description: 'IP address to look up'
+          }
+        ],
+        responses: {
+          200: {
+            description: 'IP intelligence data',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/IpIntelligence' }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    '/api/ip-cache/stats': {
+      get: {
+        tags: ['Phase 2 — Detection & Correlation'],
+        summary: 'IP enrichment cache statistics',
+        description: 'Returns cache size and rate limiting status for IP enrichment.',
+        operationId: 'ipCacheStats',
+        responses: {
+          200: {
+            description: 'Cache stats',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    cached: { type: 'integer', example: 5 },
+                    requestsThisMinute: { type: 'integer', example: 3 },
+                    rateLimit: { type: 'integer', example: 45 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    // ─── Phase 3: Incidents & Reports ────────────────────
+    '/api/analyze': {
+      post: {
+        tags: ['Phase 3 — Incidents & Reports'],
+        summary: 'Upload & analyze log files',
+        description: 'Upload one or more log files via multipart form data. Runs the full pipeline: Parse → Detect → Correlate → Enrich → Store. Returns the incident with full analysis.',
+        operationId: 'analyzeFiles',
+        requestBody: {
+          required: true,
+          content: {
+            'multipart/form-data': {
+              schema: {
+                type: 'object',
+                required: ['files'],
+                properties: {
+                  files: {
+                    type: 'array',
+                    items: { type: 'string', format: 'binary' },
+                    description: 'Log files to analyze (max 10)'
+                  }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Analysis complete — incident created',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    incidentId: { type: 'string' },
+                    files: { type: 'array', items: { type: 'object' } },
+                    summary: { type: 'object' },
+                    attackers: { type: 'array', items: { $ref: '#/components/schemas/AttackerProfile' } },
+                    graphData: { $ref: '#/components/schemas/GraphData' }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    '/api/incidents': {
+      get: {
+        tags: ['Phase 3 — Incidents & Reports'],
+        summary: 'List all incidents',
+        description: 'Returns summary of all stored incidents, sorted by creation time (newest first).',
+        operationId: 'listIncidents',
+        responses: {
+          200: {
+            description: 'Incident list',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    incidents: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          id: { type: 'string' },
+                          createdAt: { type: 'string', format: 'date-time' },
+                          status: { type: 'string' },
+                          threatScore: { type: 'number' },
+                          totalAlerts: { type: 'integer' },
+                          totalEvents: { type: 'integer' },
+                          topAttackerIp: { type: 'string' }
+                        }
+                      }
+                    },
+                    total: { type: 'integer' }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    '/api/incidents/{id}': {
+      get: {
+        tags: ['Phase 3 — Incidents & Reports'],
+        summary: 'Get incident details',
+        description: 'Returns full detail for a specific incident including summary, attackers, and alert breakdown.',
+        operationId: 'getIncident',
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: {
+          200: { description: 'Incident detail' },
+          404: { description: 'Incident not found' }
+        }
+      },
+      delete: {
+        tags: ['Phase 3 — Incidents & Reports'],
+        summary: 'Delete an incident',
+        operationId: 'deleteIncident',
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: {
+          200: { description: 'Incident deleted' },
+          404: { description: 'Incident not found' }
+        }
+      }
+    },
+
+    '/api/incidents/{id}/timeline': {
+      get: {
+        tags: ['Phase 3 — Incidents & Reports'],
+        summary: 'Get event timeline',
+        description: 'Returns paginated, chronologically sorted events for an incident. Each event is enriched with any alerts it triggered.',
+        operationId: 'getIncidentTimeline',
+        parameters: [
+          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+          { name: 'page', in: 'query', schema: { type: 'integer', default: 1 } },
+          { name: 'pageSize', in: 'query', schema: { type: 'integer', default: 100 } }
+        ],
+        responses: {
+          200: {
+            description: 'Paginated timeline',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    events: { type: 'array', items: { $ref: '#/components/schemas/NormalizedEvent' } },
+                    totalEvents: { type: 'integer' },
+                    page: { type: 'integer' },
+                    pageSize: { type: 'integer' },
+                    totalPages: { type: 'integer' }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    '/api/incidents/{id}/graph': {
+      get: {
+        tags: ['Phase 3 — Incidents & Reports'],
+        summary: 'Get blast radius graph',
+        description: 'Returns the blast radius graph data (nodes + edges) for D3/force-graph visualization.',
+        operationId: 'getIncidentGraph',
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: {
+          200: {
+            description: 'Graph data',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/GraphData' } } }
+          }
+        }
+      }
+    },
+
+    '/api/incidents/{id}/report': {
+      get: {
+        tags: ['Phase 3 — Incidents & Reports'],
+        summary: 'Download forensic report',
+        description: 'Generates and downloads a forensic incident report. Supports Markdown and PDF formats.',
+        operationId: 'downloadReport',
+        parameters: [
+          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+          { name: 'format', in: 'query', schema: { type: 'string', enum: ['md', 'pdf'], default: 'md' } }
+        ],
+        responses: {
+          200: {
+            description: 'Report file download',
+            content: {
+              'text/markdown': { schema: { type: 'string' } },
+              'application/pdf': { schema: { type: 'string', format: 'binary' } }
+            }
+          }
+        }
+      }
     }
   },
 
@@ -421,6 +857,93 @@ Useful for testing how the pipeline handles encoded attack payloads.`,
         type: 'object',
         properties: {
           error: { type: 'string', example: 'Could not auto-detect log format' }
+        }
+      },
+      Alert: {
+        type: 'object',
+        description: 'A security alert triggered by a detection rule.',
+        properties: {
+          id: { type: 'string', example: 'alert_1714039200_xyz' },
+          ruleId: { type: 'string', example: 'SQLI_UNION_SELECT' },
+          category: { type: 'string', example: 'SQL Injection' },
+          severity: { type: 'string', enum: ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'] },
+          description: { type: 'string' },
+          matchedPattern: { type: 'string', example: 'UNION SELECT' },
+          timestamp: { type: 'string', format: 'date-time' },
+          event: { $ref: '#/components/schemas/NormalizedEvent' }
+        }
+      },
+      AttackerProfile: {
+        type: 'object',
+        description: 'Profile of a suspected attacker IP with aggregated intelligence.',
+        properties: {
+          ip: { type: 'string', example: '192.168.1.105' },
+          threatScore: { type: 'number', example: 85 },
+          totalRequests: { type: 'integer', example: 45 },
+          attackTypes: { type: 'array', items: { type: 'string' }, example: ['SQL Injection', 'Brute Force'] },
+          targetedEndpoints: { type: 'array', items: { type: 'string' } },
+          firstSeen: { type: 'string', format: 'date-time' },
+          lastSeen: { type: 'string', format: 'date-time' },
+          geo: {
+            type: 'object',
+            properties: {
+              country: { type: 'string', example: 'Private Network' },
+              city: { type: 'string' },
+              lat: { type: 'number' },
+              lon: { type: 'number' }
+            }
+          }
+        }
+      },
+      IpIntelligence: {
+        type: 'object',
+        description: 'Geolocation and ISP data for an IP address.',
+        properties: {
+          ip: { type: 'string', example: '8.8.8.8' },
+          geo: {
+            type: 'object',
+            properties: {
+              country: { type: 'string', example: 'United States' },
+              city: { type: 'string', example: 'Mountain View' },
+              lat: { type: 'number', example: 37.386 },
+              lon: { type: 'number', example: -122.0838 }
+            }
+          },
+          isp: { type: 'string', example: 'Google LLC' },
+          org: { type: 'string', example: 'Google Public DNS' },
+          as: { type: 'string' },
+          isPrivate: { type: 'boolean', example: false },
+          cached: { type: 'boolean', example: false }
+        }
+      },
+      GraphData: {
+        type: 'object',
+        description: 'Blast radius graph data for visualization (nodes = IPs/endpoints/resources, edges = connections).',
+        properties: {
+          nodes: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                type: { type: 'string', enum: ['attacker', 'endpoint', 'resource'] },
+                label: { type: 'string' },
+                threatScore: { type: 'number' }
+              }
+            }
+          },
+          edges: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                source: { type: 'string' },
+                target: { type: 'string' },
+                weight: { type: 'integer' },
+                severity: { type: 'string' }
+              }
+            }
+          }
         }
       }
     }

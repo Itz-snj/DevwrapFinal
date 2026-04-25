@@ -98,6 +98,33 @@ app.post('/api/demo/inject', (req, res) => {
   res.json({ message: `Injected ${lines.length} ${type} events`, filename });
 });
 
+app.post('/api/demo/fetch-remote', async (req, res) => {
+  const { url } = req.body;
+  if (!url) return res.status(400).json({ error: 'Missing URL parameter' });
+  
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+    
+    const text = await response.text();
+    const watchDir = path.join(__dirname, '../watched-logs');
+    const filename = `remote_${Date.now()}.log`;
+    
+    // Write the fetched log to the watched directory. 
+    // LiveWatchdog will automatically detect it, parse it, and broadcast events!
+    writeFileSync(path.join(watchDir, filename), text, 'utf-8');
+    
+    const linesCount = text.split('\n').filter(line => line.trim().length > 0).length;
+    res.json({ 
+      message: `Successfully fetched and injected ${linesCount} lines from remote URL`, 
+      filename 
+    });
+  } catch (error) {
+    console.error('[Remote Fetch Error]', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // ─── Start Server & WebSocket ───────────────────────────────────────
 const server = app.listen(PORT, () => {
   console.log(`\n🔥 Project Phoenix server running on http://localhost:${PORT}`);
